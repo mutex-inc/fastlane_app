@@ -1,0 +1,65 @@
+name: Setup Repository
+description: 'Setup Flutter SDK & Pub get'
+inputs:
+  SSH_PRIVATE_KEY_NSER_MOBILE_APP_MODULES:
+    description: 'The SSH private key to use for access to `nser-mobile-app-modules` repository'
+    required: true
+  APP_DATABASE_SQLCIPHER_ENCRYPTION_KEY:
+    description: 'The SQLCipher encryption key for the app database'
+    required: false
+    default: default
+  API_BASE_URL:
+    description: 'The base URL for the API'
+    required: false
+    default: default
+  AWS_COGNITO_REGION:
+    description: 'The region for the AWS Cognito service'
+    required: false
+    default: default
+  AWS_COGNITO_POOL_ID:
+    description: 'The pool ID for the AWS Cognito service'
+    required: false
+    default: default
+  AWS_COGNITO_APP_CLIENT_ID:
+    description: 'The app client ID for the AWS Cognito service'
+    required: false
+    default: default
+runs:
+  using: 'composite'
+  steps:
+    - uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ inputs.SSH_PRIVATE_KEY_NSER_MOBILE_APP_MODULES }}
+
+    - name: Get flutter version & channel from .fvmrc
+      uses: kuhnroyal/flutter-fvm-config-action@v2.0
+      with:
+        path: .fvmrc
+
+    - name: Install flutter SDK
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        channel: ${{ env.FLUTTER_CHANNEL }}
+        cache: true
+        cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+        cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+
+    # pubspec dependencies をインストール
+    - name: Install pubspec dependencies
+      run: flutter pub get
+      shell: bash
+
+    - name: Set up .env
+      run: |
+        touch .env
+        echo APP_DATABASE_SQLCIPHER_ENCRYPTION_KEY=${{ inputs.APP_DATABASE_SQLCIPHER_ENCRYPTION_KEY }} >> .env
+        echo API_BASE_URL=${{ inputs.API_BASE_URL }} >> .env
+        echo AWS_COGNITO_REGION=${{ inputs.AWS_COGNITO_REGION }} >> .env
+        echo AWS_COGNITO_POOL_ID=${{ inputs.AWS_COGNITO_POOL_ID }} >> .env
+        echo AWS_COGNITO_APP_CLIENT_ID=${{ inputs.AWS_COGNITO_APP_CLIENT_ID }} >> .env
+      shell: bash
+
+    - name: Run build_runner (including env.g.dart)
+      run: dart run build_runner clean && dart run build_runner build -d
+      shell: bash

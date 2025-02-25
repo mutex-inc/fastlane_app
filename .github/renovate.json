@@ -1,0 +1,49 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "assignees": ["chrg1001"],
+  "assigneesSampleSize": 1,
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    "schedule:earlyMondays"
+  ],
+  "ignorePresets": [":prHourlyLimit2"],
+  "enabledManagers": ["pub"],
+  "fvm": {
+    "enabled": true
+  },
+  "timezone": "Asia/Tokyo",
+  "labels": ["dependencies"],
+  "rangeStrategy": "pin",
+  "rebaseWhen": "conflicted",
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "prConcurrentLimit": 4,
+  "packageRules": [
+    {
+      "matchManagers": ["pub"],
+      "matchPackageNames": ["dart", "flutter"],
+      "enabled": false
+    },
+    {
+      "matchManagers": ["pub"],
+      "matchPackagePatterns": ["firebase", "cloud_firestore"],
+      "groupName": "firebase"
+    },
+    {
+      "matchManagers": ["pub"],
+      "matchPackagePatterns": [
+        "freezed",
+        "json_annotation",
+        "json_serializable"
+      ],
+      "groupName": "freezed-json"
+    },
+    {
+      "matchManagers": ["pub"],
+      "matchPackagePatterns": ["riverpod"],
+      "groupName": "riverpod"
+    }
+  ]
+}
