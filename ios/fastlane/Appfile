@@ -1,4 +1,4 @@
-app_identifier("com.example.fastlaneApp") # The bundle identifier of your app
+app_identifier("inc.mutex.example.yoneda.adam.fastlane") # The bundle identifier of your app
 apple_id("adam.yoneda@mutex-inc.dev") # Your Apple Developer Portal username
 
 itc_team_id("126462749") # App Store Connect Team ID
