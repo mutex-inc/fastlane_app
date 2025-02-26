@@ -1,5 +1,8 @@
 name: Beta-distribute Dev app
 on:
+  push:
+    tags:
+      - v*
   workflow_dispatch:
 
 env:
