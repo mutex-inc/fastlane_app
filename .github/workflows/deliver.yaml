@@ -44,12 +44,16 @@ jobs:
       - name: gem install aws-partitions
         run: gem install aws-partitions -v 1.1054.0
 
+      - name: Get IPA Path
+        run: echo "IPA_PATH=$(find build/ios/ipa -name '*.ipa' | head -n 1)" >> $GITHUB_ENV
+
       - name: Distribute app with App Distribution
         run: >
           bundle exec fastlane ios upload
           key_id: ${{ secrets.KEY_ID }}
           issuer_id: ${{ secrets.ISSUER_ID }}
           key_filepath: ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
+          ipa_path: $IPA_PATH
         working-directory: ${{ env.fastlane_directory }}
       
       - name: Remove App Store Connect API Key
