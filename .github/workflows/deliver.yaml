@@ -46,7 +46,7 @@ jobs:
         env:
           key_id: ${{ secrets.KEY_ID }}
           issuer_id: ${{ secrets.ISSUER_ID }}
-          key_filepath: ${{ env.ipa_file }}
+          key_filepath: ./private_keys
         working-directory: ${{ env.fastlane_directory }}
       
       - name: Remove App Store Connect API Key
