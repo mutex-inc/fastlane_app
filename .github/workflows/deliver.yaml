@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  export_options_plist: 'ios/export_options/ExportOptions.plist'
+  export_options_plist: 'ios/ipa/ExportOptions.plist'
   fastlane_directory: 'ios/fastlane'
   ipa_file: '../../build/ios/ipa/fastlane_app.ipa'
 
