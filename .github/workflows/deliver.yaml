@@ -49,7 +49,7 @@ jobs:
           bundle exec fastlane ios upload
           key_id: ${{ secrets.KEY_ID }}
           issuer_id: ${{ secrets.ISSUER_ID }}
-          key_filepath: ./private_keys
+          key_filepath: ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
         working-directory: ${{ env.fastlane_directory }}
       
       - name: Remove App Store Connect API Key
