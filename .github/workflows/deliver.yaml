@@ -50,6 +50,7 @@ jobs:
       - name: Distribute app with App Distribution
         run: >
           bundle exec fastlane ios upload
+          work_space_path: ${{ github.workspace }}/ios/Runner.xcodeproj
           key_id: ${{ secrets.KEY_ID }}
           issuer_id: ${{ secrets.ISSUER_ID }}
           key_filepath: ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
