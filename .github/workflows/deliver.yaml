@@ -45,8 +45,8 @@ jobs:
         run: gem install aws-partitions -v 1.1054.0
 
       - name: Distribute app with App Distribution
-        run: bundle exec fastlane upload
-        env:
+        run: >
+          bundle exec fastlane upload
           key_id: ${{ secrets.KEY_ID }}
           issuer_id: ${{ secrets.ISSUER_ID }}
           key_filepath: ./private_keys
