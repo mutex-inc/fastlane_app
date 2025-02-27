@@ -14,8 +14,8 @@
 	<string>automatic</string>
 	<key>stripSwiftSymbols</key>
 	<true/>
-	<key>"9Y8NQD68HS"</key>
-	<string>ULBDWNXBPS</string>
+	<key>teamID</key>
+	<string>9Y8NQD68HS</string>
 	<key>testFlightInternalTestingOnly</key>
 	<false/>
 	<key>uploadSymbols</key>
