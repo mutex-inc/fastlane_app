@@ -19,8 +19,8 @@ platform :ios do
   desc "App Store Connectに署名済みビルドをアップロード"
   lane :upload do |options|
     key_id = options[:key_id]
-    issuer_id = [:issuer_id]
-    key_filepath = [:key_filepath]
+    issuer_id = options[:issuer_id]
+    key_filepath = options[:key_filepath]
     
     # 自動署名
     # automatic_code_signing(
@@ -57,5 +57,6 @@ platform :ios do
         add_id_info_tracks_install: false            # インストールをトラッキングしない
       }
     )
+    # pilot(api_key: api_key)
   end
 end
