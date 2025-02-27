@@ -18,9 +18,6 @@ jobs:
     steps:
       - name: Checks-out the repository
         uses: actions/checkout@v4
-
-      - name: cd ios
-        run: cd ios
       
       - name: Install Gems
         run: bundle install
