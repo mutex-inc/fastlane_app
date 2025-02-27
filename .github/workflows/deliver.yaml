@@ -41,6 +41,9 @@ jobs:
           xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -sdk iphoneos -configuration Release archive -archivePath build/ios/Runner.xcarchive CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
           xcodebuild -exportArchive -archivePath build/ios/Runner.xcarchive -exportOptionsPlist ${{ env.export_options_plist }} -exportPath build/ios/ipa -allowProvisioningUpdates -authenticationKeyIssuerID ${{ secrets.ISSUER_ID }} -authenticationKeyID ${{ secrets.KEY_ID }} -authenticationKeyPath `pwd`/private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
       
+      - name: gem install aws-partitions
+        run: gem install aws-partitions -v 1.1054.0
+
       - name: Distribute app with App Distribution
         run: bundle exec fastlane upload
         env:
