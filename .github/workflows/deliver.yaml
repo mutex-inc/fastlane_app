@@ -46,7 +46,7 @@ jobs:
 
       - name: Distribute app with App Distribution
         run: >
-          bundle exec fastlane upload
+          bundle exec fastlane ios upload
           key_id: ${{ secrets.KEY_ID }}
           issuer_id: ${{ secrets.ISSUER_ID }}
           key_filepath: ./private_keys
