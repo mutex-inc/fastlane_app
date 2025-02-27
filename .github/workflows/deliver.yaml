@@ -30,11 +30,12 @@ jobs:
       - name: Get Flutter dependencies
         run: flutter pub get
       
-      - name: Decode App Store Connect API Key
+      - name: Store App Store Connect API Key
         run: |
           mkdir -p ./private_keys
-          echo "${{ secrets.APP_STORE_CONNECT_API_KEY }}" | base64 --decode > ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
-          stat ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
+          echo "${{ secrets.APP_STORE_CONNECT_API_KEY }}" > ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
+          chmod 600 ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8  # セキュリティ対策
+          stat ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8  # ファイル情報を確認
       
       - name: Build IPA
         run: |
