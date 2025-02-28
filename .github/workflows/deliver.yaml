@@ -34,7 +34,7 @@ jobs:
         run: |
           mkdir -p ./private_keys
           echo "${{ secrets.APP_STORE_CONNECT_API_KEY }}" > ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
-          export KEY_CONTENT=$(cat ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8 | tr '\n' '\\n')
+          export KEY_CONTENT=$(cat ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8)
           chmod 600 ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
           cd ./private_keys
           ls -lh
@@ -85,7 +85,7 @@ jobs:
           work_space_path: ${{ github.workspace }}/ios/Runner.xcodeproj
           key_id: ${{ secrets.KEY_ID }}
           issuer_id: ${{ secrets.ISSUER_ID }}
-          key_content: "$KEY_CONTENT"
+          key_content: "${{ secrets.APP_STORE_CONNECT_API_KEY }}"
         working-directory: ${{ env.fastlane_directory }}
       
       - name: Remove App Store Connect API Key
