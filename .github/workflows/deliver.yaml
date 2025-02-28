@@ -75,8 +75,8 @@ jobs:
         run: pwd
         working-directory: ${{ env.fastlane_directory }}
     
-      - name: Tree
-        run: tree
+      # - name: Tree
+      #   run: tree
 
       - name: Distribute app with App Distribution
         if: env.file_exists == 'true'
