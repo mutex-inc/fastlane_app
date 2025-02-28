@@ -74,11 +74,14 @@ jobs:
       - name: Debug current directory
         run: pwd
         working-directory: ${{ env.fastlane_directory }}
+    
+      - name: Tree
+        run: tree
 
       - name: Distribute app with App Distribution
         if: env.file_exists == 'true'
         run: >
-          bundle exec fastlane upload
+          bundle exec fastlane ios upload
           work_space_path: ${{ github.workspace }}/ios/Runner.xcodeproj
           key_id: ${{ secrets.KEY_ID }}
           issuer_id: ${{ secrets.ISSUER_ID }}
