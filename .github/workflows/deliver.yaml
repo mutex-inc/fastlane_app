@@ -81,15 +81,22 @@ jobs:
       - name: fastlane env
         run: bundle exec fastlane env
 
-      - name: Distribute app with App Distribution
-        if: env.file_exists == 'true'
-        run: >
-          bundle exec fastlane ios upload
-          work_space_path: ${{ github.workspace }}/ios/Runner.xcodeproj
-          key_id: ${{ secrets.KEY_ID }}
-          issuer_id: ${{ secrets.ISSUER_ID }}
-          key_filepath: /Users/runner/work/fastlane_app/fastlane_app/private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
-        working-directory: ${{ env.fastlane_directory }}
+      # - name: Distribute app with App Distribution
+      #   if: env.file_exists == 'true'
+      #   run: >
+      #     bundle exec fastlane ios upload
+      #     work_space_path: ${{ github.workspace }}/ios/Runner.xcodeproj
+      #     key_id: ${{ secrets.KEY_ID }}
+      #     issuer_id: ${{ secrets.ISSUER_ID }}
+      #     key_filepath: /Users/runner/work/fastlane_app/fastlane_app/private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
+        # working-directory: ${{ env.fastlane_directory }}
+
+      - name: Upload to App Store Connect
+        id: upload
+        env:
+          APPLE_APPLE_ID: ${{ secrets.APPLE_APPLE_ID }}
+          APPLE_APP_PASS: ${{ secrets.APPLE_APP_PASS }}
+        run: xcrun altool --upload-app --type ios -f "$IPA_PATH" -u "$APPLE_APPLE_ID" -p "$APPLE_APP_PASS"
       
       - name: Remove App Store Connect API Key
         if: always()
