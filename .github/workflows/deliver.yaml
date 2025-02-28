@@ -7,7 +7,7 @@ on:
 
 env:
   export_options_plist: 'ios/ipa/ExportOptions.plist'
-  fastlane_directory: '${{ github.workspace }}/ios/fastlane'
+  fastlane_directory: '${{ github.workspace }}/ios'
   ipa_file: '../../build/ios/ipa/fastlane_app.ipa'
 
 jobs:
@@ -75,16 +75,17 @@ jobs:
         run: pwd
         working-directory: ${{ env.fastlane_directory }}
 
+      - name: cd ios
+        run: cd ios
+
       - name: Distribute app with App Distribution
         if: env.file_exists == 'true'
         run: >
-          bundle exec fastlane ios upload
+          bundle exec fastlane upload
           work_space_path: ${{ github.workspace }}/ios/Runner.xcodeproj
           key_id: ${{ secrets.KEY_ID }}
           issuer_id: ${{ secrets.ISSUER_ID }}
-          key_content: $KEY_CONTENT
-          ipa_path: $IPA_PATH
-        working-directory: ${{ env.fastlane_directory }}
+          key_path: ../private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
       
       - name: Remove App Store Connect API Key
         if: always()
