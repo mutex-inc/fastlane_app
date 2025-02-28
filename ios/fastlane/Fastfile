@@ -21,7 +21,7 @@ platform :ios do
     work_space_path = options[:work_space_path]
     key_id = options[:key_id]
     issuer_id = options[:issuer_id]
-    key_filepath = options[:key_filepath]
+    key_content = options[:key_content]
     ipa_path = options[:ipa_path]
     
     # Bundle Versionのインクリメント
@@ -31,7 +31,8 @@ platform :ios do
     api_key = app_store_connect_api_key(
       key_id: key_id,
       issuer_id: issuer_id,
-      key_filepath: key_filepath
+      key_content: key_content
+      is_key_content_base64: true
     )
 
     # TestFlightの配布
