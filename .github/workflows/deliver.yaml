@@ -82,7 +82,7 @@ jobs:
           work_space_path: ${{ github.workspace }}/ios/Runner.xcodeproj
           key_id: ${{ secrets.KEY_ID }}
           issuer_id: ${{ secrets.ISSUER_ID }}
-          key_content: $KEY_CONTENT
+          key_content: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
           ipa_path: $IPA_PATH
         working-directory: ${{ env.fastlane_directory }}
       
