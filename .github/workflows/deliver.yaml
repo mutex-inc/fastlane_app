@@ -78,6 +78,9 @@ jobs:
       # - name: Tree
       #   run: tree
 
+      - name: fastlane env
+        run: bundle exec fastlane env
+
       - name: Distribute app with App Distribution
         if: env.file_exists == 'true'
         run: >
@@ -85,7 +88,7 @@ jobs:
           work_space_path: ${{ github.workspace }}/ios/Runner.xcodeproj
           key_id: ${{ secrets.KEY_ID }}
           issuer_id: ${{ secrets.ISSUER_ID }}
-          key_content: ${{ secrets.APP_KEY_IN_ONE_LINE }}
+          key_filepath: /Users/runner/work/fastlane_app/fastlane_app/private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
         working-directory: ${{ env.fastlane_directory }}
       
       - name: Remove App Store Connect API Key
