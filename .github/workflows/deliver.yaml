@@ -51,13 +51,27 @@ jobs:
       - name: Get IPA Path
         run: echo "IPA_PATH=$(find build/ios/ipa -name '*.ipa' | head -n 1)" >> $GITHUB_ENV
 
+      - name: Check if Auth Key File Exists
+        id: check_file
+        run: |
+            FILE_PATH="./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8"
+            if [ -f "$FILE_PATH" ]; then
+              echo "✅ Key file exists: $FILE_PATH"
+              echo "file_exists=true" >> $GITHUB_ENV
+            else
+              echo "❌ ERROR: Key file does not exist!"
+              echo "file_exists=false" >> $GITHUB_ENV
+              exit 1
+            fi
+
       - name: Distribute app with App Distribution
+        if: env.file_exists == 'true'
         run: >
           bundle exec fastlane ios upload
           work_space_path: ${{ github.workspace }}/ios/Runner.xcodeproj
           key_id: ${{ secrets.KEY_ID }}
           issuer_id: ${{ secrets.ISSUER_ID }}
-          key_filepath: ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
+          key_filepath: $(realpath ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8)
           ipa_path: $IPA_PATH
         working-directory: ${{ env.fastlane_directory }}
       
