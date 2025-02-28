@@ -75,9 +75,6 @@ jobs:
         run: pwd
         working-directory: ${{ env.fastlane_directory }}
 
-      - name: cd ios
-        run: cd ios
-
       - name: Distribute app with App Distribution
         if: env.file_exists == 'true'
         run: >
@@ -86,6 +83,7 @@ jobs:
           key_id: ${{ secrets.KEY_ID }}
           issuer_id: ${{ secrets.ISSUER_ID }}
           key_path: ../private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
+        working-directory: ${{ env.fastlane_directory }}
       
       - name: Remove App Store Connect API Key
         if: always()
