@@ -7,7 +7,7 @@ on:
 
 env:
   export_options_plist: 'ios/ipa/ExportOptions.plist'
-  fastlane_directory: 'ios/fastlane'
+  fastlane_directory: '${{ github.workspace }}/ios/fastlane'
   ipa_file: '../../build/ios/ipa/fastlane_app.ipa'
 
 jobs:
@@ -38,6 +38,12 @@ jobs:
           cd ./private_keys
           ls -lh
           cd ..
+          
+      - name: Set absolute key file path
+        run: echo "AUTH_KEY_PATH=$(pwd)/private_keys/AuthKey_${{ secrets.KEY_ID }}.p8" >> $GITHUB_ENV
+        
+      - name: Debug key path
+        run: echo "AUTH_KEY_PATH=$AUTH_KEY_PATH"
       
       - name: Build IPA
         run: |
@@ -67,11 +73,12 @@ jobs:
       - name: Distribute app with App Distribution
         if: env.file_exists == 'true'
         run: >
+          pwd
           bundle exec fastlane ios upload
           work_space_path: ${{ github.workspace }}/ios/Runner.xcodeproj
           key_id: ${{ secrets.KEY_ID }}
           issuer_id: ${{ secrets.ISSUER_ID }}
-          key_filepath: $(realpath ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8)
+          key_filepath: $AUTH_KEY_PATH
           ipa_path: $IPA_PATH
         working-directory: ${{ env.fastlane_directory }}
       
