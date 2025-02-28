@@ -70,10 +70,13 @@ jobs:
               exit 1
             fi
 
+      - name: Debug current directory
+        run: pwd
+        working-directory: ${{ env.fastlane_directory }}
+
       - name: Distribute app with App Distribution
         if: env.file_exists == 'true'
         run: >
-          pwd
           bundle exec fastlane ios upload
           work_space_path: ${{ github.workspace }}/ios/Runner.xcodeproj
           key_id: ${{ secrets.KEY_ID }}
