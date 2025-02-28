@@ -85,7 +85,7 @@ jobs:
           work_space_path: ${{ github.workspace }}/ios/Runner.xcodeproj
           key_id: ${{ secrets.KEY_ID }}
           issuer_id: ${{ secrets.ISSUER_ID }}
-          key_content: "${{ secrets.APP_KEY_IN_ONE_LINE }}"
+          key_content: ${{ secrets.APP_KEY_IN_ONE_LINE }}
         working-directory: ${{ env.fastlane_directory }}
       
       - name: Remove App Store Connect API Key
