@@ -1,4 +1,4 @@
-name: Beta-distribute Dev app
+name: Upload TestFlight
 on:
   push:
     tags:
@@ -7,8 +7,6 @@ on:
 
 env:
   export_options_plist: 'ios/ipa/ExportOptions.plist'
-  fastlane_directory: '${{ github.workspace }}/ios'
-  ipa_file: '../../build/ios/ipa/fastlane_app.ipa'
 
 jobs:
   beta-distribute-ios-app:
@@ -19,9 +17,6 @@ jobs:
       - name: Checks-out the repository
         uses: actions/checkout@v4
       
-      - name: Install Gems
-        run: bundle install
-      
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -29,73 +24,12 @@ jobs:
       
       - name: Get Flutter dependencies
         run: flutter pub get
-      
-      - name: Decode App Store Connect API Key
-        run: |
-          mkdir -p ./private_keys
-          echo "${{ secrets.APP_STORE_CONNECT_API_KEY }}" > ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
-          export KEY_CONTENT=$(cat ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8)
-          chmod 600 ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
-          cd ./private_keys
-          ls -lh
-          cd ..
-          
-      - name: Set absolute key file path
-        run: echo "AUTH_KEY_PATH=${{ github.workspace }}/private_keys/AuthKey_${{ secrets.KEY_ID }}.p8" >> $GITHUB_ENV
-        
-      - name: Debug key path
-        run: echo "AUTH_KEY_PATH=$AUTH_KEY_PATH"
-      
+             
       - name: Build IPA
         run: |
           flutter build ios --release --no-codesign
           xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -sdk iphoneos -configuration Release archive -archivePath build/ios/Runner.xcarchive CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
-          xcodebuild -exportArchive -archivePath build/ios/Runner.xcarchive -exportOptionsPlist ${{ env.export_options_plist }} -exportPath build/ios/ipa -allowProvisioningUpdates -authenticationKeyIssuerID ${{ secrets.ISSUER_ID }} -authenticationKeyID ${{ secrets.KEY_ID }} -authenticationKeyPath `pwd`/private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
-      
-      - name: gem install aws-partitions
-        run: gem install aws-partitions -v 1.1054.0
-
-      - name: Get IPA Path
-        run: echo "IPA_PATH=$(find build/ios/ipa -name '*.ipa' | head -n 1)" >> $GITHUB_ENV
-
-      - name: Check if Auth Key File Exists
-        id: check_file
-        run: |
-            FILE_PATH="./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8"
-            if [ -f "$FILE_PATH" ]; then
-              echo "✅ Key file exists: $FILE_PATH"
-              echo "file_exists=true" >> $GITHUB_ENV
-            else
-              echo "❌ ERROR: Key file does not exist!"
-              echo "file_exists=false" >> $GITHUB_ENV
-              exit 1
-            fi
-
-      # - name: Debug current directory
-      #   run: pwd
-      #   working-directory: ${{ env.fastlane_directory }}
-    
-      # - name: Tree
-      #   run: tree
-
-      # - name: fastlane env
-      #   run: bundle exec fastlane env
-
-      # - name: Distribute app with App Distribution
-      #   if: env.file_exists == 'true'
-      #   run: >
-      #     bundle exec fastlane ios upload
-      #     work_space_path: ${{ github.workspace }}/ios/Runner.xcodeproj
-      #     key_id: ${{ secrets.KEY_ID }}
-      #     issuer_id: ${{ secrets.ISSUER_ID }}
-      #     key_filepath: /Users/runner/work/fastlane_app/fastlane_app/private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
-        # working-directory: ${{ env.fastlane_directory }}
-
-      - name: Upload to App Store Connect
+          
+      - name: Upload to App with ExportOptions.plist
         id: upload
-        run: |
-          xcrun altool --upload-app -f $IPA_PATH -t ios -u ${{ secrets.APPLE_APPLE_ID }} -p ${{ secrets.APPLE_APP_PASS }} --type ios
-      
-      - name: Remove App Store Connect API Key
-        if: always()
-        run: rm -f ./private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
+        run: xcodebuild -exportArchive -archivePath build/ios/Runner.xcarchive -exportOptionsPlist ${{ env.export_options_plist }} -exportPath build/ios/ipa -allowProvisioningUpdates -authenticationKeyIssuerID ${{ secrets.ISSUER_ID }} -authenticationKeyID ${{ secrets.KEY_ID }} -authenticationKeyPath `pwd`/private_keys/AuthKey_${{ secrets.KEY_ID }}.p8
