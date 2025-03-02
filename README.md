@@ -1,8 +1,16 @@
 # CDのexample app
-### 結論
+### (1) 結論
 - fastlaneは使用せずに、TestFlightの配布を行いました。
 
-### `ExportOptions.plist(destination: upload)` + `xcodebuild -exportArchive`でTestFlightの配布を行う
+### (2) 必要な環境変数
+- `ISSURE_ID`
+- `KEY_ID`
+
+[こちらの記事が画像付きで分かりやすいです](https://arc.net/l/quote/pheghqeb)
+![image](https://github.com/user-attachments/assets/3fba0216-61be-4555-92ff-9045b9edf7ee)
+
+
+### (3) `ExportOptions.plist(destination: upload)` + `xcodebuild -exportArchive`でTestFlightの配布を行う
 - `ExportOptions.plist` - `destination`: `upload` ([ref](https://qiita.com/taisuke_h/items/e37d96c96a811b630c0c#destination))
 - `xcodebuild`: `-exportArchive`
 ```
@@ -18,9 +26,3 @@ xcodebuild -exportArchive // specifies that an archive should be exported
 各コメントは xcodebuild -help から
 ```
 
-### 必要な環境変数
-- `ISSURE_ID`
-- `KEY_ID`
-
-[こちらの記事が画像付きで分かりやすいです](https://arc.net/l/quote/pheghqeb)
-![image](https://github.com/user-attachments/assets/3fba0216-61be-4555-92ff-9045b9edf7ee)
