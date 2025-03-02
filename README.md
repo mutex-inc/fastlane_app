@@ -3,7 +3,7 @@
 - fastlaneは使用せずに、TestFlightの配布を行いました。
 
 ### (2) 必要な環境変数
-- `APP_STORE_CONNECT_API_KEY`
+- `APP_STORE_CONNECT_API_KEY`: 今回はbase64でのエンコード、デコードはなし(base64で変換している記事は多い)
 - `ISSURE_ID`
 - `KEY_ID`
 
