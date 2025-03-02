@@ -3,6 +3,7 @@
 - fastlaneは使用せずに、TestFlightの配布を行いました。
 
 ### (2) 必要な環境変数
+- `APP_STORE_CONNECT_API_KEY`
 - `ISSURE_ID`
 - `KEY_ID`
 
