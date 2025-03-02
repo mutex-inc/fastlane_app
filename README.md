@@ -3,7 +3,7 @@
 - fastlaneは使用せずに、TestFlightの配布を行いました。
 
 ### `ExportOptions.plist(destination: upload)` + `xcodebuild -exportArchive`でTestFlightの配布を行う
-- `ExportOptions.plist` - `destination`: `upload` ([ref1](https://qiita.com/taisuke_h/items/e37d96c96a811b630c0c#destination), [ref2]())
+- `ExportOptions.plist` - `destination`: `upload` ([ref](https://qiita.com/taisuke_h/items/e37d96c96a811b630c0c#destination))
 - `xcodebuild`: `-exportArchive`
 ```
 xcodebuild -exportArchive // specifies that an archive should be exported
